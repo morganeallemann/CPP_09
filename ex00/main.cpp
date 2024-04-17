@@ -10,3 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "BitcoinExchange.hpp"
+#include <sstream>
+
+int main(int ac, char **av){
+	if (ac != 2){
+		std::cout << "Failed: Insert input file" << std::endl;
+		return (1);
+	}
+	BitcoinExchange test("data.csv");
+	test.doExchange(av[1]);
+	return (0);
+}

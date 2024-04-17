@@ -17,26 +17,32 @@
 #include <string>
 #include <algorithm>
 #include <map>
-#include 
+#include <fstream>
+#include <ctime>
+#include <sstream>
 
 class BitcoinExchange
 {
     private:
-        float   value;
+        std::map<std::string, float>    data;
+        void    loadDataFile(const std::string &datafile);
 
     public:
         /* CONSTRUCTOR */
-        BitcoinExchange(/* args */);
+        BitcoinExchange(const std::string &datafile);
         /* COPY CONSTRUCTOR */
         BitcoinExchange(BitcoinExchange const &cpy);
         /* DESTRUCTOR */
         ~BitcoinExchange();
         /* SURCHARGED OPERATOR */
-        BitcoinExchange operator=(BitcoinExchange &const rhs);
+        BitcoinExchange &operator=(BitcoinExchange const &rhs);
         /* MEMBER FUNCTIONS */
-        float   getValue(void);
-        void    setValue(float v);
+        float   findExchangeRates(const std::string date);
+        void    doExchange(const std::string &inFile);
 };
 
-#endif 
+bool    validDate(const std::string &date);
+bool    isLeapYear(int year);
+bool    validValue(const std::string &value);
 
+#endif
