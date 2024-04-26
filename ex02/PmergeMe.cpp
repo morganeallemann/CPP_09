@@ -18,11 +18,20 @@ PmergeMe::PmergeMe(int ac, char **av){
 	insertNum(numD, av, ac);
 	insertNum(numV, av, ac);
 	std::cout << "Before: ";
-	display(numD);
+	display(numV);
+	clock_t	startV = clock();
 	_firstCont = mergeSortV(numV);
+	clock_t endV = clock();
+	double timeV = double(endV - startV) / CLOCKS_PER_SEC;
+	clock_t	startD = clock();
 	_secCont = mergeSortD(numD);
-	std::cout << "After :";
+	clock_t	endD = clock();
+	double timeD = double(endD - startD) / CLOCKS_PER_SEC;
+	std::cout << "After: ";
 	display(_firstCont);
+	std::cout << std::fixed << std::setprecision(6);
+	std::cout << "Time to process a range of " << _firstCont.size() << " elements with std::vector : " << timeV << " sec." << std::endl;
+	std::cout << "Time to process a range of " << _firstCont.size() << " elements with std::deque : " << timeD << " sec." << std::endl;
 }
 
 PmergeMe::PmergeMe(PmergeMe const &cpy){
@@ -58,21 +67,83 @@ void	PmergeMe::display(T &container){
 	std::cout << std::endl;
 }
 
-std::vector<int>	PmergeMe::mergeSortV(std::vector<int> numV){
+std::vector<int>	PmergeMe::mergeSortV(std::vector<int> &numV){
+	if (numV.size() <= 1)
+		return (numV);
+	
 	int	middle = numV.size() / 2;
 	std::vector<int> left(numV.begin(), numV.begin() + middle);
-	std::vector<int> right(numV.begin(), middle + numV.end());
+	std::vector<int> right(numV.begin() + middle, numV.end());
 
 	left = mergeSortV(left);
 	right = mergeSortV(right);
-
+	
 	return (mergeV(left, right));
 }
 
-std::deque<int>		PmergeMe::mergeSortD(std::deque<int> numD){
+std::deque<int>		PmergeMe::mergeSortD(std::deque<int> &numD){
+	if (numD.size() <= 1)
+		return (numD);
+	int	middle = numD.size() / 2;
+	std::deque<int> left(numD.begin(), numD.begin() + middle);
+	std::deque<int> right(numD.begin() + middle, numD.end());
 
+	left = mergeSortD(left);
+	right = mergeSortD(right);
+
+	return (mergeD(left, right));
 }
 
-std::vector<int>	PmergeMe::mergeV(std::vector<int> left, std::vector<int> right){
-	std::vector<int> sortedLst; 
+std::deque<int>		PmergeMe::mergeD(std::deque<int> &left, std::deque<int> &right){
+	std::deque<int> sortedLst;
+	int i = 0;
+	int j = 0;
+
+	while (i < static_cast<int>(left.size()) && j < static_cast<int>(right.size())){
+		if (left[i] <= right[j]){
+			sortedLst.push_back(left[i]);
+			i++;
+		}
+		else{
+			sortedLst.push_back(right[j]);
+			j++;
+		}
+
+	}
+	while (i < static_cast<int>(left.size())){
+		sortedLst.push_back(left[i]);
+		i++;
+	}
+	while (j < static_cast<int>(right.size())){
+		sortedLst.push_back(right[j]);
+		j++;
+	}
+	return (sortedLst);
+}
+
+std::vector<int>	PmergeMe::mergeV(std::vector<int> &left, std::vector<int> &right){
+	std::vector<int> sortedLst;
+	int i = 0;
+	int j = 0;
+
+	while (i < static_cast<int>(left.size()) && j < static_cast<int>(right.size())){
+		if (left[i] <= right[j]){
+			sortedLst.push_back(left[i]);
+			i++;
+		}
+		else{
+			sortedLst.push_back(right[j]);
+			j++;
+		}
+
+	}
+	while (i < static_cast<int>(left.size())){
+		sortedLst.push_back(left[i]);
+		i++;
+	}
+	while (j < static_cast<int>(right.size())){
+		sortedLst.push_back(right[j]);
+		j++;
+	}
+	return (sortedLst);
 }

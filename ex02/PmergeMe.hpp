@@ -18,6 +18,8 @@
 #include <algorithm>
 #include <vector>
 #include <deque>
+#include <ctime>
+#include <iomanip>
 
 class PmergeMe{
 
@@ -39,9 +41,10 @@ class PmergeMe{
         void    insertNum(T &container, char **av, int ac);
         template <typename T>
         void    display(T &container);
-        std::vector<int> mergeSortV(std::vector<int> numV);
-        std::deque<int> mergeSortD(std::deque<int> numD);
-        std::vector<int> mergeV(std::vector<int> left, std::vector<int> right);
+        std::vector<int> mergeSortV(std::vector<int> &numV);
+        std::deque<int> mergeSortD(std::deque<int> &numD);
+        std::vector<int> mergeV(std::vector<int> &left, std::vector<int> &right);
+        std::deque<int> mergeD(std::deque<int> &left, std::deque<int> &right);
 
 };
 
